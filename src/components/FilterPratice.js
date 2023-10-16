@@ -32,7 +32,6 @@ function FilterPratice() {
 
     const filterData = () => {
         let filteredData = [...fetchData]; // Create a copy of fetchData
-        console.log("data", filteredData);
         if (messFilter !== '') {
             filteredData = filteredData.filter(data => data.mess === messFilter);
             console.log("filteredData (after filter):", filteredData);

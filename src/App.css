@@ -14,5 +14,37 @@
   height: 100vh;
   padding: 30px 10px;
 }
-.form_overflow {
+/* Paginate */
+.paginationBttns {
+  width: 80%;
+  height: 40px;
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  padding: 10px;
+}
+
+.paginationBttns a {
+  padding: 10px;
+  color: 2b2eff;
+  margin: 10px;
+  border-radius: 2px;
+  border: 1px solid #ff392b;
+  text-decoration: none;
+}
+
+.paginationBttns a:hover {
+  color: white;
+  background-color: #ff392b;
+}
+.paginationActive a {
+  color: white;
+  background-color: #ff392b;
+}
+
+#Filter{
+  background-color: var(--BGFilter);
+}
+#restBtn{
+  
 }

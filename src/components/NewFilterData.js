@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-function RecordData() {
+function NewFilterData() {
     const [fetchData, setFetchData] = useState([]);
     const [storeSearchData, setStoreSearchData] = useState([]);
     const [searchData, setSearchData] = useState({
@@ -20,71 +20,43 @@ function RecordData() {
         const { name, value } = e.target;
         console.log(e.target.value);
         setSearchData({ ...searchData, [name]: value });
-
     };
 
     //Make a filter Option
-    // const filteredData = (messFilter, hostlerFilter, courseFilter) => {
-    //     let selectFilterData = storeSearchData;
-    //     if (messFilter !== "") {
-    //         if (messFilter === 'YES')
-    //             selectFilterData = selectFilterData.filter(data => data.hostel === "YES");
-    //         else if (messFilter === 'NO')
-    //             selectFilterData = selectFilterData.filter(data => data.hostel === "NO");
-    //     }
-    //     if (hostlerFilter !== '') {
-    //         if (hostlerFilter === 'YES')
-    //             selectFilterData = selectFilterData.filter(data => data.hostel === "YES");
-    //         else if (hostlerFilter === 'NO')
-    //             selectFilterData = selectFilterData.filter(data => data.hostel === "NO");
-    //     }
-    //     if (courseFilter !== '') {
-    //         if (courseFilter === 'YES')
-    //             selectFilterData = selectFilterData.filter(data => data.hostel === "YES");
-    //         else if (courseFilter === 'NO')
-    //             selectFilterData = selectFilterData.filter(data => data.hostel === "NO");
-    //     }
-
-    //     console.log("Value Coming (after filtering)", selectFilterData);
-    //     setFetchData(selectFilterData);
-    // }
-
-    const filteredData = (messFilter, hostlerFilter, courseFilter) => {
-        console.log(messFilter);
-        let selectFilterData = storeSearchData;
-    
+    const filteredData = () => {
+        console.log("Click Me");
+        let selectFilterData = [...storeSearchData];
+        console.log("Value Coming", selectFilterData);
         if (messFilter !== "") {
-            selectFilterData = selectFilterData.filter(data => data.mess === messFilter);
+            selectFilterData = selectFilterData.filter((data) => data.mess === messFilter)
         }
-    
         if (hostlerFilter !== '') {
             selectFilterData = selectFilterData.filter(data => data.hostel === hostlerFilter);
         }
-    
+
         if (courseFilter !== '') {
             selectFilterData = selectFilterData.filter(data => data.course === courseFilter);
         }
-    
+
         console.log("Value Coming (after filtering)", selectFilterData);
-        setFetchData(selectFilterData);
+        return filteredData;
     }
-    
+
+    let selectFilterData = filteredData();
+
 
     //Search Filter 
     const handleHostler = (e) => {
         setHostlerFilter(e.target.value);
-        filteredData("", hostlerFilter, "");
     }
 
     const handleMess = (e) => {
         setMessFilter(e.target.value)
-        filteredData(messFilter, "", "");
         // console.log(setMessFilter);
     }
 
     const handleCourse = (e) => {
         setCourseFilter(e.target.value)
-        filteredData("", "", courseFilter);
     }
 
     ////////////SearchData////////////
@@ -98,9 +70,7 @@ function RecordData() {
                 })
                 .then((res) => {
                     setFetchData(res.data);
-                    setStoreSearchData(res.data);
-                    console.log(fetchData);
-                    console.log(storeSearchData);
+                    setStoreSearchData(res.data)
                 })
                 .catch((err) => {
                     console.log(err);
@@ -129,7 +99,7 @@ function RecordData() {
         setMessFilter("")
     };
 
-    // console.log(storeSearchData);
+// console.log(storeSearchData);
 
     //format the date
     const formatDate = (date) => {
@@ -151,7 +121,8 @@ function RecordData() {
             });
     }, []);
 
-    // console.log("SelectFilterData",selectFilterData.length);
+    console.log("StoreSearchData length", storeSearchData.length);
+    console.log("SelectFilterData",selectFilterData.length);
     return (
         <div>
             <div className="container-fluid">
@@ -279,36 +250,32 @@ function RecordData() {
                                         <th scope="col">Operation</th>
                                     </tr>
                                 </thead>
-                                <tbody className="text-center">
-                                    {searchData.length === 0 && searchData.length === 0 ? (
-                                        <>
-                                            <h4 className="text-center">Data is Not exists</h4>
-                                            {console.log(searchData)}
+                                <tbody className="text-center">                                
+                                    {selectFilterData.length===0 ? (    
+                                        <>                        
+                                        <h4 className="text-center">Data is Not exists</h4>
+                                        {console.log(selectFilterData)}
                                         </>
-
-                                    )
-                                        : (<>
-                                            {fetchData.map((data) => (
-                                                <tr key={data.id}>
-                                                    <td>{data.rollno}</td>
-                                                    <td>{data.name}</td>
-                                                    <td>{data.course}</td>
-                                                    <td>{data.city}</td>
-                                                    <td>{data.mess}</td>
-                                                    <td>{data.hostel}</td>
-                                                    <td>{formatDate(data.date)}</td>
-                                                    <th>
-                                                        <button className="btn btn-danger">Delete</button>
-                                                        <button className="btn btn-warning mx-2">Update</button>
-                                                    </th>
-                                                </tr>
-                                            ))}
-                                        </>
-
-                                        )}
-
-
-
+                                        
+                                    )                                 
+                                    : (<>
+                                        {selectFilterData.map((data) => (
+                                            <tr key={data.id}>
+                                                <td>{data.rollno}</td>
+                                                <td>{data.name}</td>
+                                                <td>{data.course}</td>
+                                                <td>{data.city}</td>
+                                                <td>{data.mess}</td>
+                                                <td>{data.hostel}</td>
+                                                <td>{formatDate(data.date)}</td>
+                                                <th>
+                                                    <button className="btn btn-danger">Delete</button>
+                                                    <button className="btn btn-warning mx-2">Update</button>
+                                                </th>
+                                            </tr>
+                                        ))}
+                                    </>
+                                    )}
                                 </tbody>
                             </table>
                         </div>
@@ -320,4 +287,4 @@ function RecordData() {
     )
 }
 
-export default RecordData
+export default NewFilterData
