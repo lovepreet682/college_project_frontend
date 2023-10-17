@@ -12,8 +12,15 @@ function SortData() {
     const changePage = ({ selected }) => {
         setPageNumber(selected)
     }
+
+    //Gender Section
     const [gender, setGender] = useState("")
-    const handleGender = () => {
+
+    const handleGender = (e) => {
+        const selectedGender = e.target.value;
+        console.log(selectedGender);
+        setGender(selectedGender);
+        applyFilter(selectedGender, "")
 
     }
 
@@ -21,9 +28,9 @@ function SortData() {
     const ascendingOrder = () => {
         let data = [...fetchData];
         if (data.length > 0) {
-            let result = data.sort((a, b) => 
+            let result = data.sort((a, b) =>
                 a.name.localeCompare(b.name));
-                setFetchData(result)
+            setFetchData(result)
         }
     }
 
@@ -31,15 +38,31 @@ function SortData() {
     const descendingOrder = () => {
         let data = [...fetchData];
         if (data.length > 0) {
-            let result = data.sort((a, b) => 
+            let result = data.sort((a, b) =>
                 b.name.localeCompare(a.name));
-                setFetchData(result)
+            setFetchData(result)
         }
     }
 
     // Rest button
-    const handleRest=()=>{
+    const handleRest = () => {
         setFetchData(DATA)
+        setGender('')
+    }
+
+    // Applying filters
+    const applyFilter = (genderFilter, sortData) => {
+        let selectFilter = [...DATA];
+        console.log(selectFilter);
+
+        if (genderFilter === "Male") {
+            selectFilter = selectFilter.filter((data) => data.gender === "Male");
+        } else if (genderFilter === "Female") {
+            selectFilter = selectFilter.filter((data) => data.gender === "Female");
+        }
+
+
+        setFetchData(selectFilter)
     }
     return (
         <>
@@ -63,17 +86,17 @@ function SortData() {
                             <div className="col-md-10">
                                 <label for="gender">Choose Gender:</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" onChange={handleGender} value="YES" checked={gender === "YES"}
-                                        type="radio" name="messMembership" id="flexRadioDefault1" />
+                                    <input class="form-check-input" onChange={handleGender} value="Male" checked={gender === "Male"}
+                                        type="radio" name="gender" id="flexRadioDefault1" />
                                     <label class="form-check-label" for="flexRadioDefault1">
-                                        Yes
+                                        Male
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" onChange={handleGender} value="NO" checked={gender === "NO"} type="radio"
-                                        name="messMembership" id="flexRadioDefault2" />
+                                    <input class="form-check-input" onChange={handleGender} value="Female" checked={gender === "Female"} type="radio"
+                                        name="gender" id="flexRadioDefault2" />
                                     <label class="form-check-label" for="flexRadioDefault2">
-                                        No
+                                        Female
                                     </label>
                                 </div>
                             </div>
